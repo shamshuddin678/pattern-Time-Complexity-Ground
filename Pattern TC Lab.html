@@ -1,0 +1,93 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pattern TC Lab</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b1f2a;--mu:#667085;--bd:#e3e6ee;--ac:#2563eb;--ok:#16a34a;--bad:#dc2626;--cd:#f1f5f9;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141a;--card:#1b1e27;--tx:#e8eaf0;--mu:#9aa3b5;--bd:#2c3140;--ac:#6ea0ff;--ok:#4ade80;--bad:#f87171;--cd:#11131a}}
+:root[data-theme="dark"]{--bg:#12141a;--card:#1b1e27;--tx:#e8eaf0;--mu:#9aa3b5;--bd:#2c3140;--ac:#6ea0ff;--ok:#4ade80;--bad:#f87171;--cd:#11131a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+.w{max-width:900px;margin:0 auto;padding:16px}h1{margin:0;font-size:26px}.sub,.mu{color:var(--mu)}.sub{margin:2px 0 12px}
+.card,details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:10px 0}.card{padding:12px 14px}
+summary{padding:12px 14px;cursor:pointer;font-weight:600}
+button,input,select{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font:inherit;font-size:14px}button{cursor:pointer}button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:5px 6px;border-bottom:1px solid var(--bd);text-align:left}
+.y{color:var(--ok);font-weight:700}.n{color:var(--bad);font-weight:700}
+.st{border-left:4px solid var(--bd);padding:6px 10px;margin:8px 14px}.st.l{border-color:var(--ok)}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}pre{background:var(--cd);padding:10px;border-radius:8px;overflow-x:auto;margin:8px 14px;font-size:13px}
+.tc{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ac)}.tag{font-size:11px;background:var(--bd);border-radius:9px;padding:1px 8px;color:var(--mu);margin-left:6px}
+.p{padding:0 14px 8px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+</style></head><body><div class="w">
+<h1>Pattern TC Lab</h1><div class="sub">See how each pattern cuts time complexity from brute force to optimal, and learn the clue that tells you to use it.</div>
+<div class="top"><div class="bar"><i id="pb"></i></div><div class="mu" style="font-size:13px;display:flex;justify-content:space-between;margin-top:4px"><span id="pt"></span><button id="th">Theme</button></div></div>
+<div class="card"><b>Constraint matcher</b><p class="mu" style="margin:4px 0 8px">Enter the input size <code>n</code> from the problem. Checks what complexity can pass and which patterns can fix a too-slow brute force.</p>
+<label>n = <input id="n" type="number" value="100000" min="1" style="width:130px"></label> <select id="lang"><option value="1e7">Python (~10⁷ ops)</option><option value="1e8">C++/Java (~10⁸ ops)</option></select>
+<div id="mt" style="margin-top:8px"></div><div id="mp"></div></div>
+<details><summary>Rule of thumb: constraint → complexity → pattern family</summary><div class="p"><table><tr><th>n up to</th><th>Max TC</th><th>Think of</th></tr>
+<tr><td>10</td><td>O(n!)</td><td>Permutations, backtracking</td></tr><tr><td>20</td><td>O(2ⁿ)</td><td>Subsets, bitmask</td></tr><tr><td>500</td><td>O(n³)</td><td>3 nested loops, Floyd, interval DP</td></tr><tr><td>5,000</td><td>O(n²)</td><td>2D DP, nested loops</td></tr><tr><td>10⁵ – 10⁶</td><td>O(n log n)</td><td>Sort, heap, binary search, hash, two pointers, window</td></tr><tr><td>10⁷</td><td>O(n)</td><td>One pass, prefix sums, stack</td></tr><tr><td>10⁹ +</td><td>O(log n)</td><td>Binary search, math</td></tr></table>
+<p class="mu">Method: count the loops, multiply, compare with the operations your language can do. If brute force is too big, look for the clue that lets each element be handled O(1) times.</p></div></details>
+<div class="chips" id="ch"></div><div id="app"></div></div>
+<script>
+const F={"2n":["O(2ⁿ)",n=>Math.pow(2,Math.min(n,1000))],"n3":["O(n³)",n=>n**3],"n2":["O(n²)",n=>n*n],"nlogn":["O(n log n)",n=>n*Math.log2(n+1)],"n":["O(n)",n=>n],"logn":["O(log n)",n=>Math.log2(n+1)]};
+const P=[
+["Arrays","Prefix Sum + Hash Map","Subarray sum equals / count of k, range sums, negatives allowed (so a window fails).","Subarray Sum Equals K (LC 560)",
+[["O(n³)","n3","Pick every pair (i,j): about n²/2 pairs. Re-adding the elements inside costs up to n more, so ≈ n³/6."],["O(n²)","n2","Fix i and extend j with a running sum. Still n²/2 pairs, each O(1)."],["O(n)","n","sum(i..j) = P[j] − P[i−1]. We need that to equal k, so P[i−1] = P[j] − k. Look this up in a hash map of prefix sums seen so far: n steps × O(1)."]],
+"Rewrite the condition so the second index becomes a lookup instead of a loop.","seen={0:1}; s=ans=0\nfor x in a:\n    s+=x; ans+=seen.get(s-k,0)\n    seen[s]=seen.get(s,0)+1"],
+["Arrays","Two Pointers (sorted)","Sorted array (or sort first), pair or triplet with a target, in-place work.","Two Sum II (LC 167), 3Sum (LC 15)",
+[["O(n²)","n2","Check all pairs: n(n−1)/2."],["O(n)","n","Start l=0, r=n−1. If a[l]+a[r] < target, a[l] is too small even with the largest partner, so discard l forever; otherwise discard r. Each step removes one element: at most n steps."]],
+"Each move proves one element can never be part of the answer. 3Sum: fix one element, then two pointers: n × n = O(n²) instead of O(n³).","l,r=0,len(a)-1\nwhile l<r:\n    s=a[l]+a[r]\n    if s==t: return l,r\n    l+=s<t; r-=s>t"],
+["Arrays","Sliding Window","Longest / shortest / count of a contiguous subarray or substring with a condition that stays valid as the window grows or shrinks.","Longest Substring Without Repeating (LC 3)",
+[["O(n³)","n3","All substrings ≈ n²/2, each checked for repeats in O(n)."],["O(n²)","n2","For each start i, extend j until a repeat: n²/2 steps."],["O(n)","n","Left only moves forward. Each character enters the window once and leaves once: at most 2n steps. A dict of last positions lets left jump past a repeat."]],
+"Never restart from scratch; slide and reuse the previous window's work.","last={}; l=best=0\nfor r,ch in enumerate(s):\n    if last.get(ch,-1)>=l: l=last[ch]+1\n    last[ch]=r; best=max(best,r-l+1)"],
+["Arrays","Kadane (1D DP)","Maximum or minimum sum of a contiguous subarray, with negatives.","Maximum Subarray (LC 53)",
+[["O(n³)","n3","All pairs n²/2, add each range: n³/6."],["O(n²)","n2","Running sum for each start."],["O(n)","n","Best sum ending at i = max(a[i], best ending at i−1 + a[i]). One value per index."]],
+"If the running sum becomes negative, it only hurts the future, so drop it and restart.","cur=best=a[0]\nfor x in a[1:]:\n    cur=max(x,cur+x); best=max(best,cur)"],
+["Strings","Frequency Count Key","Anagram, permutation, same characters, small fixed alphabet (26).","Group Anagrams (LC 49)",
+[["O(N²·k)","n2","N words of length k. Comparing every pair of words costs N²/2 comparisons."],["O(N·k log k)","nlogn","Use the sorted word as a dict key: N sorts of k log k."],["O(N·k)","n","Use a 26-count tuple as the key: counting is O(k), so N × k in total."]],
+"Replace comparison with a canonical key that is cheap to compute.","d=defaultdict(list)\nfor w in words:\n    c=[0]*26\n    for ch in w: c[ord(ch)-97]+=1\n    d[tuple(c)].append(w)"],
+["Hashing","Hash Map Complement","Find a pair or element satisfying an equation with another element; array unsorted; need O(1) membership.","Two Sum (LC 1)",
+[["O(n²)","n2","Every pair: n(n−1)/2."],["O(n log n)","nlogn","Sort, then two pointers. The sort dominates, and original indexes are lost."],["O(n)","n","For x, the partner must be t−x. Check a hash map of values seen so far (O(1)), then insert x."]],
+"Turn an inner search loop into a hash lookup: O(n) inner loop becomes O(1).","seen={}\nfor i,x in enumerate(a):\n    if t-x in seen: return seen[t-x],i\n    seen[x]=i"],
+["Binary Search","Binary Search on Sorted Data","Sorted or rotated array, n up to 10⁹, asked for O(log n), find first/last position.","Binary Search (LC 704), Rotated Array (LC 33)",
+[["O(n)","n","Scan every element."],["O(log n)","logn","Each comparison halves the range: n → n/2 → n/4 → … → 1. That takes log₂n steps (n = 10⁶ needs only about 20)."]],
+"If you can throw away half the candidates after one check, you get log n.","lo,hi=0,len(a)-1\nwhile lo<=hi:\n    m=(lo+hi)//2\n    if a[m]==t: return m\n    if a[m]<t: lo=m+1\n    else: hi=m-1"],
+["Binary Search","Binary Search on Answer","Minimize the maximum / maximize the minimum; answer range is huge; a yes/no check is monotonic.","Koko Eating Bananas (LC 875)",
+[["O(m·n)","n2","Try every speed 1..m and check each in O(n). If m is 10⁹ this is impossible."],["O(n log m)","nlogn","If speed s works then s+1 also works (monotonic), so binary search the speed: log₂m checks, each O(n)."]],
+"Search the answer space, not the array. Write feasible(x) first, then binary search it.","lo,hi=1,max(p)\nwhile lo<hi:\n    m=(lo+hi)//2\n    if sum(-(-x//m) for x in p)<=h: hi=m\n    else: lo=m+1\nreturn lo"],
+["Linked List","Fast and Slow Pointers","Cycle detection, middle node, k-th from end, with O(1) extra space.","Linked List Cycle (LC 141)",
+[["O(n) time, O(n) space","n","Store visited nodes in a set."],["O(n) time, O(1) space","n","Slow moves 1, fast moves 2. Inside a cycle the gap changes by 1 each step, so they meet within about n steps. Time stays O(n), but the extra memory goes from O(n) to O(1)."]],
+"Here the improvement is space, not time. Constraints that ask for O(1) memory point to this pattern.","s=f=head\nwhile f and f.next:\n    s,f=s.next,f.next.next\n    if s is f: return True\nreturn False"],
+["Stack","Monotonic Stack","Next greater or smaller element, spans, histogram, nearest larger value for every index.","Daily Temperatures (LC 739)",
+[["O(n²)","n2","For each day scan right until a warmer one: worst case n²/2."],["O(n)","n","Keep a stack of days still waiting for a warmer one. Each index is pushed once and popped once, so at most 2n operations in total."]],
+"Count total pushes plus pops over the whole run, not the inner while loop on its own: this is amortized O(n).","st=[]; res=[0]*len(T)\nfor i,t in enumerate(T):\n    while st and T[st[-1]]<t:\n        j=st.pop(); res[j]=i-j\n    st.append(i)"],
+["Heap","Top-K with a Heap","k largest / smallest / most frequent, k much smaller than n, streaming data.","Kth Largest Element (LC 215)",
+[["O(n log n)","nlogn","Sort everything, take k."],["O(n log k)","nlogn","Keep a min-heap of size k. Each of n items costs log k to push or pop. If k is small this is close to O(n)."],["O(n) average","n","Quickselect partitions like quicksort but follows one side only: n + n/2 + n/4 + … = 2n."]],
+"You only need k items ordered, not all n.","h=[]\nfor x in a:\n    heapq.heappush(h,x)\n    if len(h)>k: heapq.heappop(h)\nreturn h[0]"],
+["Trees","Tree DFS: Return and Update","Height, diameter, path sum, balanced check: each node needs facts from both subtrees.","Diameter of Binary Tree (LC 543)",
+[["O(n²)","n2","At every node compute left and right heights with a fresh traversal: n nodes × O(n) on a skewed tree."],["O(n)","n","One post-order pass. Each call returns its height and updates the answer with left + right. Every node is visited once."]],
+"Return one value up the recursion and update a global answer on the way.","def h(node):\n    if not node: return 0\n    l,r=h(node.left),h(node.right)\n    self.ans=max(self.ans,l+r)\n    return 1+max(l,r)"],
+["Recursion → DP","Memoization / DP","Count ways, min cost, max value; a choice at each step; the same subproblem keeps repeating; n up to 10³–10⁵.","Climbing Stairs (LC 70)",
+[["O(2ⁿ)","2n","f(n) = f(n−1) + f(n−2): every call makes two more, so the tree doubles per level."],["O(n)","n","The same f(k) appears again and again. Only n different states exist; store each result once: n states × O(1)."],["O(n) time, O(1) space","n","f(n) needs only the previous two values, so keep two variables."]],
+"Count the distinct states. If it is far smaller than the number of calls, memoize.","a=b=1\nfor _ in range(n-1): a,b=b,a+b\nreturn b"]];
+let S={};try{S=JSON.parse(localStorage.getItem("ptl")||"{}")}catch(e){}
+const sv=()=>{try{localStorage.setItem("ptl",JSON.stringify(S))}catch(e){}},$=i=>document.getElementById(i);
+let ds="All";const DS=["All",...new Set(P.map(p=>p[0]))],fn=(k,n)=>F[k][1](n);
+function prog(){const d=P.filter((_,i)=>S[i]).length;$("pb").style.width=d/P.length*100+"%";$("pt").textContent=`${d}/${P.length} patterns practised`}
+function match(){const n=Math.max(1,+$("n").value||1),lim=+$("lang").value;
+$("mt").innerHTML="<table><tr><th>Complexity</th><th>Operations</th><th>Fits?</th></tr>"+Object.keys(F).map(k=>{const o=fn(k,n);return `<tr><td class="tc">${F[k][0]}</td><td>${o>1e15?"huge":Math.round(o).toLocaleString()}</td><td class="${o<=lim?"y":"n"}">${o<=lim?"Yes":"Too slow"}</td></tr>`}).join("")+"</table>";
+const hit=P.map((p,i)=>[p,i]).filter(([p])=>{const b=p[4][0][1],o=p[4][p[4].length-1][1];return fn(b,n)>lim&&fn(o,n)<=lim});
+$("mp").innerHTML=`<p style="margin:8px 0 4px"><b>Brute force fails here, but these patterns fit:</b></p>`+(hit.length?hit.map(([p,i])=>`<button onclick="go(${i})" style="margin:2px">${p[1]}</button>`).join(""):'<span class="mu">Brute force already fits this n, or no listed pattern gets below the limit.</span>')}
+function go(i){ds="All";render();const e=document.getElementById("p"+i);e.open=true;e.scrollIntoView({behavior:"smooth"})}
+function render(){$("ch").innerHTML="";DS.forEach(d=>{const b=document.createElement("button");b.textContent=d;if(d==ds)b.className="on";b.onclick=()=>{ds=d;render()};$("ch").appendChild(b)});
+const app=$("app");app.innerHTML="";P.forEach((p,i)=>{if(ds!="All"&&p[0]!=ds)return;const e=document.createElement("details");e.id="p"+i;
+e.innerHTML=`<summary>${p[1]}<span class="tag">${p[0]}</span> <span class="tc" style="font-weight:400;font-size:13px">${p[4][0][0]} → ${p[4][p[4].length-1][0]}</span></summary>
+<div class="p"><p><b>Use when:</b> ${p[2]}</p><p><b>Example:</b> ${p[3]}</p></div>`+p[4].map((s,j)=>`<div class="st ${j==p[4].length-1?"l":""}"><span class="tc">${s[0]}</span> ${j==0?"(brute force)":j==p[4].length-1?"(optimal)":"(better)"}<div class="mu">${s[2]}</div></div>`).join("")+`<div class="p"><b>Key idea:</b> ${p[5]}</div><pre>${p[6].replace(/</g,"&lt;")}</pre><div class="p"><label><input type="checkbox" ${S[i]?"checked":""} onchange="S[${i}]=this.checked;sv();prog()"> I have practised this pattern</label></div>`;app.appendChild(e)});prog()}
+$("n").oninput=match;$("lang").onchange=match;
+$("th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme=="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=d?"light":"dark"};
+render();match();
+</script></body></html>
+
+</body></html>
