@@ -8,84 +8,267 @@
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141a;--card:#1b1e27;--tx:#e8eaf0;--mu:#9aa3b5;--bd:#2c3140;--ac:#6ea0ff;--ok:#4ade80;--bad:#f87171;--cd:#11131a}}
 :root[data-theme="dark"]{--bg:#12141a;--card:#1b1e27;--tx:#e8eaf0;--mu:#9aa3b5;--bd:#2c3140;--ac:#6ea0ff;--ok:#4ade80;--bad:#f87171;--cd:#11131a}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-.w{max-width:900px;margin:0 auto;padding:16px}h1{margin:0;font-size:26px}.sub,.mu{color:var(--mu)}.sub{margin:2px 0 12px}
-.card,details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:10px 0}.card{padding:12px 14px}
-summary{padding:12px 14px;cursor:pointer;font-weight:600}
+.w{max-width:960px;margin:0 auto;padding:16px}h1{margin:0;font-size:26px}h2{font-size:18px;margin:22px 0 4px}.sub,.mu{color:var(--mu)}.sub{margin:2px 0 12px}
+.card,details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:8px 0}.card{padding:12px 14px}
+details>summary{padding:11px 14px;cursor:pointer;font-weight:600;list-style-position:inside}
 button,input,select{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font:inherit;font-size:14px}button{cursor:pointer}button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+input[type=checkbox]{width:17px;height:17px;padding:0;accent-color:var(--ok);flex:none;margin-top:3px}
 .bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0}
 .top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:5}
-table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:5px 6px;border-bottom:1px solid var(--bd);text-align:left}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:5px 6px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top}
 .y{color:var(--ok);font-weight:700}.n{color:var(--bad);font-weight:700}
-.st{border-left:4px solid var(--bd);padding:6px 10px;margin:8px 14px}.st.l{border-color:var(--ok)}
-code,pre{font-family:ui-monospace,Menlo,Consolas,monospace}pre{background:var(--cd);padding:10px;border-radius:8px;overflow-x:auto;margin:8px 14px;font-size:13px}
-.tc{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ac)}.tag{font-size:11px;background:var(--bd);border-radius:9px;padding:1px 8px;color:var(--mu);margin-left:6px}
-.p{padding:0 14px 8px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.tc{font-family:ui-monospace,Menlo,monospace;font-weight:700;color:var(--ac)}.tg{font-size:11px;background:var(--bd);border-radius:9px;padding:1px 8px;color:var(--mu);margin-left:6px;font-weight:400}
+.b{padding:2px 14px 8px}.b p{margin:5px 0}.k{font-weight:600}
+.arrow{font-weight:400;font-size:12px;color:var(--mu);display:block;margin-top:2px}
+.st{border-left:4px solid var(--bd);padding:4px 10px;margin:6px 14px}.st.l{border-color:var(--ok)}
+pre{background:var(--cd);padding:10px;border-radius:8px;overflow-x:auto;margin:8px 14px;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace}
+.pr{display:flex;gap:9px;align-items:flex-start;padding:5px 14px;border-top:1px solid var(--bd)}.pr.d span{text-decoration:line-through;color:var(--mu)}
+a{color:var(--ac);text-decoration:none}a:hover{text-decoration:underline}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.note{border-left:4px solid #d97706;background:var(--card);border-radius:8px;padding:8px 12px;margin:8px 0;font-size:13px}
+.why{background:var(--cd);border-radius:8px;padding:8px 10px;margin:6px 0}
 </style></head><body><div class="w">
-<h1>Pattern TC Lab</h1><div class="sub">See how each pattern cuts time complexity from brute force to optimal, and learn the clue that tells you to use it.</div>
-<div class="top"><div class="bar"><i id="pb"></i></div><div class="mu" style="font-size:13px;display:flex;justify-content:space-between;margin-top:4px"><span id="pt"></span><button id="th">Theme</button></div></div>
-<div class="card"><b>Constraint matcher</b><p class="mu" style="margin:4px 0 8px">Enter the input size <code>n</code> from the problem. Checks what complexity can pass and which patterns can fix a too-slow brute force.</p>
+<h1>Pattern TC Lab</h1><div class="sub">Data structure wise, pattern wise. For every pattern: brute force, the optimized target, the clue that tells you to use it, why the complexity drops, and problems to practise.</div>
+<div class="top"><div class="bar"><i id="pb"></i></div><div class="mu" style="font-size:13px;display:flex;justify-content:space-between;margin-top:4px"><span id="pt"></span><span><button id="th">Theme</button> <button id="rs">Reset</button></span></div></div>
+
+<div class="card"><b>Constraint matcher</b><p class="mu" style="margin:4px 0 8px">Enter the input size <code>n</code> from a problem. It shows what can pass, and which patterns turn a too-slow brute force into one that fits.</p>
 <label>n = <input id="n" type="number" value="100000" min="1" style="width:130px"></label> <select id="lang"><option value="1e7">Python (~10⁷ ops)</option><option value="1e8">C++/Java (~10⁸ ops)</option></select>
 <div id="mt" style="margin-top:8px"></div><div id="mp"></div></div>
-<details><summary>Rule of thumb: constraint → complexity → pattern family</summary><div class="p"><table><tr><th>n up to</th><th>Max TC</th><th>Think of</th></tr>
-<tr><td>10</td><td>O(n!)</td><td>Permutations, backtracking</td></tr><tr><td>20</td><td>O(2ⁿ)</td><td>Subsets, bitmask</td></tr><tr><td>500</td><td>O(n³)</td><td>3 nested loops, Floyd, interval DP</td></tr><tr><td>5,000</td><td>O(n²)</td><td>2D DP, nested loops</td></tr><tr><td>10⁵ – 10⁶</td><td>O(n log n)</td><td>Sort, heap, binary search, hash, two pointers, window</td></tr><tr><td>10⁷</td><td>O(n)</td><td>One pass, prefix sums, stack</td></tr><tr><td>10⁹ +</td><td>O(log n)</td><td>Binary search, math</td></tr></table>
-<p class="mu">Method: count the loops, multiply, compare with the operations your language can do. If brute force is too big, look for the clue that lets each element be handled O(1) times.</p></div></details>
-<div class="chips" id="ch"></div><div id="app"></div></div>
+<details><summary>Rule of thumb: constraint → complexity → pattern family</summary><div class="b"><table><tr><th>n up to</th><th>Max TC</th><th>Think of</th></tr>
+<tr><td>10</td><td>O(n!)</td><td>Permutations, backtracking</td></tr><tr><td>20</td><td>O(2ⁿ)</td><td>Subsets, bitmask</td></tr><tr><td>500</td><td>O(n³)</td><td>Interval DP, Floyd–Warshall, 3 nested loops</td></tr><tr><td>5,000</td><td>O(n²)</td><td>2D DP, nested loops</td></tr><tr><td>10⁵ – 10⁶</td><td>O(n log n)</td><td>Sort, heap, binary search, hash, two pointers, window</td></tr><tr><td>10⁷</td><td>O(n)</td><td>One pass, prefix sums, stack</td></tr><tr><td>10⁹ +</td><td>O(log n)</td><td>Binary search, math</td></tr></table>
+<p class="mu">Method: count the loops, multiply, compare with the operations your language can do. If brute force is too big, ask what clue lets each element be handled O(1) times, or what lets you discard half the candidates. Operation limits are rough guides, not exact.</p></div></details>
+<div class="chips" id="ch"></div>
+<input id="q" placeholder="Search a pattern, clue or problem (e.g. LRU, 560, sliding)" style="width:100%;margin:4px 0">
+<div id="app"></div>
+<p class="mu" style="font-size:12px">Problem links open a LeetCode search for that problem number. Complexities assume the standard version of each problem; check the stated conditions.</p></div>
 <script>
-const F={"2n":["O(2ⁿ)",n=>Math.pow(2,Math.min(n,1000))],"n3":["O(n³)",n=>n**3],"n2":["O(n²)",n=>n*n],"nlogn":["O(n log n)",n=>n*Math.log2(n+1)],"n":["O(n)",n=>n],"logn":["O(log n)",n=>Math.log2(n+1)]};
-const P=[
-["Arrays","Prefix Sum + Hash Map","Subarray sum equals / count of k, range sums, negatives allowed (so a window fails).","Subarray Sum Equals K (LC 560)",
-[["O(n³)","n3","Pick every pair (i,j): about n²/2 pairs. Re-adding the elements inside costs up to n more, so ≈ n³/6."],["O(n²)","n2","Fix i and extend j with a running sum. Still n²/2 pairs, each O(1)."],["O(n)","n","sum(i..j) = P[j] − P[i−1]. We need that to equal k, so P[i−1] = P[j] − k. Look this up in a hash map of prefix sums seen so far: n steps × O(1)."]],
-"Rewrite the condition so the second index becomes a lookup instead of a loop.","seen={0:1}; s=ans=0\nfor x in a:\n    s+=x; ans+=seen.get(s-k,0)\n    seen[s]=seen.get(s,0)+1"],
-["Arrays","Two Pointers (sorted)","Sorted array (or sort first), pair or triplet with a target, in-place work.","Two Sum II (LC 167), 3Sum (LC 15)",
-[["O(n²)","n2","Check all pairs: n(n−1)/2."],["O(n)","n","Start l=0, r=n−1. If a[l]+a[r] < target, a[l] is too small even with the largest partner, so discard l forever; otherwise discard r. Each step removes one element: at most n steps."]],
-"Each move proves one element can never be part of the answer. 3Sum: fix one element, then two pointers: n × n = O(n²) instead of O(n³).","l,r=0,len(a)-1\nwhile l<r:\n    s=a[l]+a[r]\n    if s==t: return l,r\n    l+=s<t; r-=s>t"],
-["Arrays","Sliding Window","Longest / shortest / count of a contiguous subarray or substring with a condition that stays valid as the window grows or shrinks.","Longest Substring Without Repeating (LC 3)",
-[["O(n³)","n3","All substrings ≈ n²/2, each checked for repeats in O(n)."],["O(n²)","n2","For each start i, extend j until a repeat: n²/2 steps."],["O(n)","n","Left only moves forward. Each character enters the window once and leaves once: at most 2n steps. A dict of last positions lets left jump past a repeat."]],
-"Never restart from scratch; slide and reuse the previous window's work.","last={}; l=best=0\nfor r,ch in enumerate(s):\n    if last.get(ch,-1)>=l: l=last[ch]+1\n    last[ch]=r; best=max(best,r-l+1)"],
-["Arrays","Kadane (1D DP)","Maximum or minimum sum of a contiguous subarray, with negatives.","Maximum Subarray (LC 53)",
-[["O(n³)","n3","All pairs n²/2, add each range: n³/6."],["O(n²)","n2","Running sum for each start."],["O(n)","n","Best sum ending at i = max(a[i], best ending at i−1 + a[i]). One value per index."]],
-"If the running sum becomes negative, it only hurts the future, so drop it and restart.","cur=best=a[0]\nfor x in a[1:]:\n    cur=max(x,cur+x); best=max(best,cur)"],
-["Strings","Frequency Count Key","Anagram, permutation, same characters, small fixed alphabet (26).","Group Anagrams (LC 49)",
-[["O(N²·k)","n2","N words of length k. Comparing every pair of words costs N²/2 comparisons."],["O(N·k log k)","nlogn","Use the sorted word as a dict key: N sorts of k log k."],["O(N·k)","n","Use a 26-count tuple as the key: counting is O(k), so N × k in total."]],
-"Replace comparison with a canonical key that is cheap to compute.","d=defaultdict(list)\nfor w in words:\n    c=[0]*26\n    for ch in w: c[ord(ch)-97]+=1\n    d[tuple(c)].append(w)"],
-["Hashing","Hash Map Complement","Find a pair or element satisfying an equation with another element; array unsorted; need O(1) membership.","Two Sum (LC 1)",
-[["O(n²)","n2","Every pair: n(n−1)/2."],["O(n log n)","nlogn","Sort, then two pointers. The sort dominates, and original indexes are lost."],["O(n)","n","For x, the partner must be t−x. Check a hash map of values seen so far (O(1)), then insert x."]],
-"Turn an inner search loop into a hash lookup: O(n) inner loop becomes O(1).","seen={}\nfor i,x in enumerate(a):\n    if t-x in seen: return seen[t-x],i\n    seen[x]=i"],
-["Binary Search","Binary Search on Sorted Data","Sorted or rotated array, n up to 10⁹, asked for O(log n), find first/last position.","Binary Search (LC 704), Rotated Array (LC 33)",
-[["O(n)","n","Scan every element."],["O(log n)","logn","Each comparison halves the range: n → n/2 → n/4 → … → 1. That takes log₂n steps (n = 10⁶ needs only about 20)."]],
-"If you can throw away half the candidates after one check, you get log n.","lo,hi=0,len(a)-1\nwhile lo<=hi:\n    m=(lo+hi)//2\n    if a[m]==t: return m\n    if a[m]<t: lo=m+1\n    else: hi=m-1"],
-["Binary Search","Binary Search on Answer","Minimize the maximum / maximize the minimum; answer range is huge; a yes/no check is monotonic.","Koko Eating Bananas (LC 875)",
-[["O(m·n)","n2","Try every speed 1..m and check each in O(n). If m is 10⁹ this is impossible."],["O(n log m)","nlogn","If speed s works then s+1 also works (monotonic), so binary search the speed: log₂m checks, each O(n)."]],
-"Search the answer space, not the array. Write feasible(x) first, then binary search it.","lo,hi=1,max(p)\nwhile lo<hi:\n    m=(lo+hi)//2\n    if sum(-(-x//m) for x in p)<=h: hi=m\n    else: lo=m+1\nreturn lo"],
-["Linked List","Fast and Slow Pointers","Cycle detection, middle node, k-th from end, with O(1) extra space.","Linked List Cycle (LC 141)",
-[["O(n) time, O(n) space","n","Store visited nodes in a set."],["O(n) time, O(1) space","n","Slow moves 1, fast moves 2. Inside a cycle the gap changes by 1 each step, so they meet within about n steps. Time stays O(n), but the extra memory goes from O(n) to O(1)."]],
-"Here the improvement is space, not time. Constraints that ask for O(1) memory point to this pattern.","s=f=head\nwhile f and f.next:\n    s,f=s.next,f.next.next\n    if s is f: return True\nreturn False"],
-["Stack","Monotonic Stack","Next greater or smaller element, spans, histogram, nearest larger value for every index.","Daily Temperatures (LC 739)",
-[["O(n²)","n2","For each day scan right until a warmer one: worst case n²/2."],["O(n)","n","Keep a stack of days still waiting for a warmer one. Each index is pushed once and popped once, so at most 2n operations in total."]],
-"Count total pushes plus pops over the whole run, not the inner while loop on its own: this is amortized O(n).","st=[]; res=[0]*len(T)\nfor i,t in enumerate(T):\n    while st and T[st[-1]]<t:\n        j=st.pop(); res[j]=i-j\n    st.append(i)"],
-["Heap","Top-K with a Heap","k largest / smallest / most frequent, k much smaller than n, streaming data.","Kth Largest Element (LC 215)",
-[["O(n log n)","nlogn","Sort everything, take k."],["O(n log k)","nlogn","Keep a min-heap of size k. Each of n items costs log k to push or pop. If k is small this is close to O(n)."],["O(n) average","n","Quickselect partitions like quicksort but follows one side only: n + n/2 + n/4 + … = 2n."]],
-"You only need k items ordered, not all n.","h=[]\nfor x in a:\n    heapq.heappush(h,x)\n    if len(h)>k: heapq.heappop(h)\nreturn h[0]"],
-["Trees","Tree DFS: Return and Update","Height, diameter, path sum, balanced check: each node needs facts from both subtrees.","Diameter of Binary Tree (LC 543)",
-[["O(n²)","n2","At every node compute left and right heights with a fresh traversal: n nodes × O(n) on a skewed tree."],["O(n)","n","One post-order pass. Each call returns its height and updates the answer with left + right. Every node is visited once."]],
-"Return one value up the recursion and update a global answer on the way.","def h(node):\n    if not node: return 0\n    l,r=h(node.left),h(node.right)\n    self.ans=max(self.ans,l+r)\n    return 1+max(l,r)"],
-["Recursion → DP","Memoization / DP","Count ways, min cost, max value; a choice at each step; the same subproblem keeps repeating; n up to 10³–10⁵.","Climbing Stairs (LC 70)",
-[["O(2ⁿ)","2n","f(n) = f(n−1) + f(n−2): every call makes two more, so the tree doubles per level."],["O(n)","n","The same f(k) appears again and again. Only n different states exist; store each result once: n states × O(1)."],["O(n) time, O(1) space","n","f(n) needs only the previous two values, so keep two variables."]],
-"Count the distinct states. If it is far smaller than the number of calls, memoize.","a=b=1\nfor _ in range(n-1): a,b=b,a+b\nreturn b"]];
-let S={};try{S=JSON.parse(localStorage.getItem("ptl")||"{}")}catch(e){}
-const sv=()=>{try{localStorage.setItem("ptl",JSON.stringify(S))}catch(e){}},$=i=>document.getElementById(i);
-let ds="All";const DS=["All",...new Set(P.map(p=>p[0]))],fn=(k,n)=>F[k][1](n);
-function prog(){const d=P.filter((_,i)=>S[i]).length;$("pb").style.width=d/P.length*100+"%";$("pt").textContent=`${d}/${P.length} patterns practised`}
-function match(){const n=Math.max(1,+$("n").value||1),lim=+$("lang").value;
-$("mt").innerHTML="<table><tr><th>Complexity</th><th>Operations</th><th>Fits?</th></tr>"+Object.keys(F).map(k=>{const o=fn(k,n);return `<tr><td class="tc">${F[k][0]}</td><td>${o>1e15?"huge":Math.round(o).toLocaleString()}</td><td class="${o<=lim?"y":"n"}">${o<=lim?"Yes":"Too slow"}</td></tr>`}).join("")+"</table>";
-const hit=P.map((p,i)=>[p,i]).filter(([p])=>{const b=p[4][0][1],o=p[4][p[4].length-1][1];return fn(b,n)>lim&&fn(o,n)<=lim});
-$("mp").innerHTML=`<p style="margin:8px 0 4px"><b>Brute force fails here, but these patterns fit:</b></p>`+(hit.length?hit.map(([p,i])=>`<button onclick="go(${i})" style="margin:2px">${p[1]}</button>`).join(""):'<span class="mu">Brute force already fits this n, or no listed pattern gets below the limit.</span>')}
-function go(i){ds="All";render();const e=document.getElementById("p"+i);e.open=true;e.scrollIntoView({behavior:"smooth"})}
-function render(){$("ch").innerHTML="";DS.forEach(d=>{const b=document.createElement("button");b.textContent=d;if(d==ds)b.className="on";b.onclick=()=>{ds=d;render()};$("ch").appendChild(b)});
-const app=$("app");app.innerHTML="";P.forEach((p,i)=>{if(ds!="All"&&p[0]!=ds)return;const e=document.createElement("details");e.id="p"+i;
-e.innerHTML=`<summary>${p[1]}<span class="tag">${p[0]}</span> <span class="tc" style="font-weight:400;font-size:13px">${p[4][0][0]} → ${p[4][p[4].length-1][0]}</span></summary>
-<div class="p"><p><b>Use when:</b> ${p[2]}</p><p><b>Example:</b> ${p[3]}</p></div>`+p[4].map((s,j)=>`<div class="st ${j==p[4].length-1?"l":""}"><span class="tc">${s[0]}</span> ${j==0?"(brute force)":j==p[4].length-1?"(optimal)":"(better)"}<div class="mu">${s[2]}</div></div>`).join("")+`<div class="p"><b>Key idea:</b> ${p[5]}</div><pre>${p[6].replace(/</g,"&lt;")}</pre><div class="p"><label><input type="checkbox" ${S[i]?"checked":""} onchange="S[${i}]=this.checked;sv();prog()"> I have practised this pattern</label></div>`;app.appendChild(e)});prog()}
-$("n").oninput=match;$("lang").onchange=match;
+const LAD={
+"Two pointers — inward":[[["O(n²)","Check all pairs: n(n−1)/2."],["O(n)","l=0, r=n−1. If a[l]+a[r] < target, a[l] is too small even with the largest partner, so discard it for good; otherwise discard a[r]. Each step removes one element: at most n steps."]],`l,r=0,len(a)-1
+while l<r:
+    s=a[l]+a[r]
+    if s==t: return l,r
+    l+=s<t; r-=s>t`],
+"Sliding window — variable size":[[["O(n³)","All substrings ≈ n²/2, each checked for repeats in O(n)."],["O(n²)","For each start i, extend j until a repeat: n²/2 steps."],["O(n)","Left only moves forward. Each character enters and leaves the window once: at most 2n steps. A dict of last positions lets left jump past a repeat."]],`last={}; l=best=0
+for r,ch in enumerate(s):
+    if last.get(ch,-1)>=l: l=last[ch]+1
+    last[ch]=r; best=max(best,r-l+1)`],
+"Prefix sum + hashmap":[[["O(n³)","Pick every pair (i,j) ≈ n²/2, re-adding the elements inside costs up to n more: ≈ n³/6."],["O(n²)","Fix i and extend j with a running sum: n²/2 pairs, O(1) each."],["O(n)","sum(i..j) = P[j] − P[i−1]. We need it to equal k, so P[i−1] = P[j] − k. Look this up in a hash map of earlier prefix sums: n steps × O(1)."]],`seen={0:1}; s=ans=0
+for x in a:
+    s+=x; ans+=seen.get(s-k,0)
+    seen[s]=seen.get(s,0)+1`],
+"Kadane's algorithm":[[["O(n³)","All n²/2 ranges, adding each in up to n steps."],["O(n²)","Running sum for each start."],["O(n)","Best sum ending at i = max(a[i], best ending at i−1 + a[i]). One value per index. If the running sum goes negative it only hurts the future, so restart."]],`cur=best=a[0]
+for x in a[1:]:
+    cur=max(x,cur+x); best=max(best,cur)`],
+"Hash set / hash map":[[["O(n²)","Every pair: n(n−1)/2."],["O(n log n)","Sort and use two pointers. Sorting dominates and original indexes are lost."],["O(n)","For x the partner must be t−x. Check a hash map of values seen so far (O(1)), then insert x."]],`seen={}
+for i,x in enumerate(a):
+    if t-x in seen: return seen[t-x],i
+    seen[x]=i`],
+"Classic binary search":[[["O(n)","Scan every element."],["O(log n)","Each comparison halves the range: n → n/2 → n/4 → … → 1 takes log₂n steps. For n = 10⁶ that is about 20."]],`lo,hi=0,len(a)-1
+while lo<=hi:
+    m=(lo+hi)//2
+    if a[m]==t: return m
+    if a[m]<t: lo=m+1
+    else: hi=m-1`],
+"Binary search on answer":[[["O(m·n)","Try every speed 1..m and check each in O(n). If m is 10⁹ this is impossible."],["O(n log m)","If speed s works then s+1 also works (monotonic), so binary search the speed: log₂m checks, each O(n)."]],`lo,hi=1,max(p)
+while lo<hi:
+    m=(lo+hi)//2
+    if sum(-(-x//m) for x in p)<=h: hi=m
+    else: lo=m+1
+return lo`],
+"Fast/slow pointers":[[["O(n) time, O(n) space","Store visited nodes in a set."],["O(n) time, O(1) space","Slow moves 1, fast moves 2. Inside a cycle the gap changes by 1 per step, so they meet within about n steps. Time stays O(n); extra memory drops from O(n) to O(1)."]],`s=f=head
+while f and f.next:
+    s,f=s.next,f.next.next
+    if s is f: return True
+return False`],
+"Monotonic stack":[[["O(n²)","For each day scan right until a warmer one: up to n²/2."],["O(n)","Keep a stack of days still waiting for a warmer one. Each index is pushed once and popped once, so at most 2n operations in total."]],`st=[]; res=[0]*len(T)
+for i,t in enumerate(T):
+    while st and T[st[-1]]<t:
+        j=st.pop(); res[j]=i-j
+    st.append(i)`],
+"Top-k elements":[[["O(n log n)","Sort everything, take k."],["O(n log k)","Keep a min-heap of size k; each of n items costs log k to push/pop. For small k this is close to O(n)."],["O(n) average","Quickselect follows one side only: n + n/2 + n/4 + … ≈ 2n."]],`h=[]
+for x in a:
+    heapq.heappush(h,x)
+    if len(h)>k: heapq.heappop(h)
+return h[0]`],
+"Height / balance / diameter":[[["O(n²)","At each node recompute left/right heights with a fresh traversal: n nodes × O(n) on a skewed tree."],["O(n)","One post-order pass: each call returns its height and updates the answer with left + right. Every node is visited once."]],`def h(node):
+    if not node: return 0
+    l,r=h(node.left),h(node.right)
+    self.ans=max(self.ans,l+r)
+    return 1+max(l,r)`],
+"Recursion with memoization":[[["O(2^n)","f(n) = f(n−1) + f(n−2): every call makes two more, so the call tree doubles each level."],["O(n)","The same f(k) repeats. Only n distinct states exist; cache each once: n states × O(1)."],["O(n) time, O(1) space","f(n) needs only the previous two values, so keep two variables."]],`a=b=1
+for _ in range(n-1): a,b=b,a+b
+return b`]
+};
+const PARTS=[
+{t:"A. Arrays & Strings",v:"n = length, k = window size / target, q = number of updates or queries.",
+N:["Sliding window is not automatically correct for every subarray problem. A sum-based window usually needs non-negative values for the shrink/expand logic.","Prefix sum makes range-sum queries fast, but does not by itself make every subarray-counting problem O(n).","Hash-map lookup is expected O(1), not a universal worst-case guarantee."],
+P:[
+["Two pointers — inward","O(n^2)","O(n), or O(n log n) including sorting","Pair sum, palindrome, compare both ends","Each move discards an element that can never be in an answer, so the pointers cross after at most n moves instead of checking n²/2 pairs.","Two Sum II|167;Valid Palindrome|125;Container With Most Water|11"],
+["Two pointers — read/write","O(n^2) in repeated shifting solutions","O(n)","Remove duplicates, move zeroes, in-place filtering","The reader scans once; the writer only advances on a keeper. That is n reads and at most n writes, instead of shifting the rest of the array after every removal (n shifts × n removals).","Remove Duplicates from Sorted Array|26;Move Zeroes|283;Remove Element|27"],
+["Two pointers — staged / merge","O(nm) in naive comparisons","O(n+m) for merging sorted sequences","Two sorted arrays/lists need to be combined","Both inputs are sorted, so the next smallest is always at one of two heads. Each step consumes one element: n+m steps rather than searching the other array each time (n×m).","Merge Sorted Array|88;Intersection of Two Arrays II|350"],
+["Three pointers","Often O(n^3)","O(n^2) or O(n), depending on the task","Three-way partition or triplet search","Fix one element (n choices) and run two pointers on the rest (O(n)): n² instead of three nested loops n³. Dutch-flag partitioning keeps three pointers in one O(n) pass.","3Sum|15;3Sum Closest|16;Sort Colors|75"],
+["Sliding window — fixed size","O(nk)","O(n)","Every contiguous window has size k","Slide by adding the entering element and removing the leaving one: O(1) per move, n moves. Recomputing each window from scratch costs k, so n·k.","Maximum Average Subarray I|643;Number of Sub-arrays of Size K and Average ≥ Threshold|1343"],
+["Sliding window — variable size","O(n^2)","O(n) when validity permits safe shrinking","Longest/shortest valid substring or subarray","The right pointer expands; left only moves forward when the window is invalid. Each index enters and leaves once, at most 2n steps, versus trying all n²/2 start/end pairs.","Longest Substring Without Repeating Characters|3;Minimum Size Subarray Sum|209;Longest Repeating Character Replacement|424"],
+["Sliding window — frequency map","O(nk) or worse","Often O(n) for a fixed character set","Anagrams, character counts, distinct elements","Maintain counts as the window moves: add one, remove one, update a match counter, all O(1). Recounting each window costs k (or alphabet size), so n·k.","Find All Anagrams in a String|438;Permutation in String|567;Minimum Window Substring|76"],
+["Prefix sum","O(n) per range query","O(n) preprocessing, then O(1) per range sum","Repeated range sums or cumulative totals","P[i] = P[i−1] + a[i] is built once in O(n). Then sum(l..r) = P[r] − P[l−1] is O(1), instead of re-adding up to n elements per query.","Range Sum Query - Immutable|303;Find Pivot Index|724;Product of Array Except Self|238"],
+["Prefix sum + hashmap","O(n^2)","Expected O(n)","Count subarrays with sum k, prefix-sum frequencies","sum(i..j) = k means P[i−1] = P[j] − k. Look up P[j] − k in a hash map of earlier prefixes (O(1)) instead of looping every i (n²).","Subarray Sum Equals K|560;Continuous Subarray Sum|523;Subarray Sums Divisible by K|974"],
+["Difference array","O(nq) for applying q range updates individually","O(n+q)","Many range additions, then reconstruct final values","Add v at l and −v at r+1 (O(1) per update), then one prefix sum rebuilds all values in O(n). Applying every update element by element costs up to n per update, so n·q.","Corporate Flight Bookings|1109;Car Pooling|1094"],
+["Kadane's algorithm","O(n^2) or O(n^3)","O(n)","Maximum subarray sum; circular variants need extra reasoning","Best sum ending at i = max(a[i], best ending at i−1 + a[i]). One value per index with an O(1) transition, instead of all n² ranges.","Maximum Subarray|53;Maximum Product Subarray|152;Maximum Sum Circular Subarray|918"],
+["Hash set / hash map","O(n^2) repeated lookup","Expected O(n)","Membership, complements, duplicates, frequency","Replace an inner search loop (O(n)) with a hash lookup (O(1) expected): n × O(1).","Two Sum|1;Contains Duplicate|217;Longest Consecutive Sequence|128"],
+["Sorting + greedy","Often O(n^2) selection or comparison","Usually O(n log n)","Ordering values makes a local choice possible","Sorting costs O(n log n) and puts the best local choice next to each other, so one O(n) scan finishes. Without ordering you re-search the remaining items for the best choice each time (n²).","Assign Cookies|455;Array Partition|561;Largest Number|179"],
+["String two-pointer","O(n) extra storage or repeated scans in naive versions","O(n), sometimes O(1) extra space","Palindrome checking, reversing, symmetric comparisons","Compare s[l] with s[r] and move inward: n/2 comparisons and no copy of the string.","Reverse String|344;Valid Palindrome II|680;Reverse Words in a String|151"],
+["String parsing / stack","Repeated rescanning may be O(n^2)","Often O(n)","Remove characters, decode, balance symbols","A stack remembers unfinished work, so each character is pushed once and popped at most once: O(n). Rescanning for a partner after every character is n².","Decode String|394;Remove All Adjacent Duplicates In String|1047;Basic Calculator II|227"]]},
+{t:"B. Binary Search",v:"n = array length, R = size of the numeric answer range, P = cost of one feasibility check.",
+N:["For binary search on answer, do not just write O(log R). If each check scans P elements, the total is usually O(P log R).","How to pick the type: sorted + exact value → classic; first/last valid position → boundary; rotated → rotated pattern; values rise/fall → peak/slope; unknown answer with monotonic feasibility → binary search on answer."],
+P:[
+["Classic binary search","O(n)","O(log n)","Find target in sorted array","Each comparison halves the range: n → n/2 → … → 1 takes log₂n steps (10⁶ elements need about 20).","Binary Search|704"],
+["Search insert position","O(n)","O(log n)","Find target or where it belongs","Same halving. When the loop ends, lo is exactly the index where the target belongs.","Search Insert Position|35"],
+["Lower bound / first true","O(n)","O(log n)","First index satisfying a monotonic condition","The condition is false…false true…true. Halve toward the first true; the range shrinks every step.","First Bad Version|278"],
+["First and last occurrence","O(n)","O(log n)","Find boundaries of duplicates","Run lower bound twice (first ≥ x and first > x). Two O(log n) searches replace a linear scan across the duplicates.","Find First and Last Position of Element in Sorted Array|34"],
+["Rotated sorted array","O(n)","O(log n)","Search in rotated sorted data","At any mid, one half is sorted. Check whether the target lies in that sorted half and discard the other: still halving.","Search in Rotated Sorted Array|33"],
+["Find minimum in rotated array","O(n)","O(log n)","Find rotation boundary","If a[mid] > a[hi] the minimum is right of mid, otherwise at mid or left. Half is dropped each step.","Find Minimum in Rotated Sorted Array|153"],
+["Peak / slope","O(n)","O(log n)","Compare neighboring values to find a peak","If a[mid] < a[mid+1] a peak exists on the right, otherwise on the left (including mid). Half is dropped each step.","Find Peak Element|162;Peak Index in a Mountain Array|852"],
+["Pair alignment / parity","O(n)","O(log n)","One singleton in sorted pairs","Before the singleton, pairs start at even indexes; after it, at odd. Checking the parity at mid says which side holds the singleton.","Single Element in a Sorted Array|540"],
+["Binary search on answer","Try all candidate answers","O(P log R) when each feasibility check costs O(P)","Minimum feasible speed, capacity, or maximum feasible minimum distance","If answer x is feasible then x+1 is feasible (monotonic). That needs log₂R checks, each a pass of P items: P·log R instead of R·P.","Koko Eating Bananas|875;Capacity To Ship Packages Within D Days|1011;Split Array Largest Sum|410"],
+["Search in sorted 2D matrix","Often O(mn)","O(log(mn)) if flattenable; O(m+n) for the row/column-sorted staircase method","Matrix has useful sorted structure","Flatten: index i is row i/cols, column i%cols, then binary search over m·n cells. For row- and column-sorted only, start at the top right and drop a row or column each step: m+n.","Search a 2D Matrix|74;Search a 2D Matrix II|240"],
+["Integer square root","O(√x) by trial","O(log x)","Find the largest integer whose square is at most x","Binary search mid in [0, x]: if mid² ≤ x move lo up, else move hi down. log x steps instead of trying up to √x values.","Sqrt(x)|69"]]},
+{t:"C. Stack & Queue",v:"n = number of elements, k = window size.",
+N:["Why monotonic stacks are fast: each element is pushed once and popped at most once. Even with a while loop inside a for loop, the total number of stack operations is O(n)."],
+P:[
+["Stack simulation","Repeatedly scan or shift elements","O(n) total with a suitable stack","Undo, backspace, remove adjacent characters","Push characters and pop on a backspace or a match. Each element is pushed and popped at most once: O(n). Rebuilding the string after every deletion is n².","Backspace String Compare|844;Remove All Adjacent Duplicates In String|1047;Baseball Game|682"],
+["Parentheses validation","Repeated matching searches","O(n)","Balanced brackets or nested expressions","Opener → push. Closer → it must match the top. One pass, O(n).","Valid Parentheses|20;Minimum Add to Make Parentheses Valid|921;Longest Valid Parentheses|32"],
+["Monotonic stack","O(n^2) next-greater searches","O(n) amortized","Next greater/smaller element, histogram","The stack holds indexes still waiting for an answer. Each index is pushed once and popped once: at most 2n operations in total.","Next Greater Element I|496;Daily Temperatures|739;Largest Rectangle in Histogram|84"],
+["Expression evaluation","Repeated parsing/rescanning","O(n) for standard expression forms","Operators, precedence, postfix notation","Use one stack for values (and one for operators when there is precedence). Each token is handled O(1) times.","Evaluate Reverse Polish Notation|150;Basic Calculator|224;Basic Calculator II|227"],
+["Stack + greedy","Often O(n^2) repeated removals","O(n) or O(n log n)","Remove k digits, smallest subsequence","While the top is worse than the incoming digit and removals remain, pop it. Each digit is pushed and popped at most once: O(n).","Remove K Digits|402;Remove Duplicate Letters|316"],
+["Queue simulation","Repeatedly shift a list","O(n) with a proper queue or deque","FIFO processing","A deque or linked queue pops the front in O(1). list.pop(0) shifts n items, which makes a loop n².","Implement Queue using Stacks|232;Number of Recent Calls|933;Time Needed to Buy Tickets|2073"],
+["Circular queue","Shifting array elements","O(1) per enqueue/dequeue","Fixed-capacity queue with wrap-around","head and tail indexes wrap with % capacity, so nothing is shifted: O(1) per operation.","Design Circular Queue|622;Design Circular Deque|641"],
+["Monotonic deque","O(nk) window maximum","O(n)","Maximum/minimum in every sliding window","Keep indexes with decreasing values. Pop the back while smaller, pop the front when out of the window. Each index enters and leaves once: O(n) instead of scanning k per window.","Sliding Window Maximum|239;Shortest Subarray with Sum at Least K|862"]]},
+{t:"D. Recursion & Linked Lists",v:"n, m = list/input sizes, N = total nodes across k lists, k = number of lists.",
+N:["Simple recursion is not necessarily exponential. One call per level can be O(n); branching recursion may be exponential unless repeated states or branches can be reduced."],
+P:[
+["Linear recursion","Repeated recomputation can be O(2^n) for some problems","O(n) for simple linear tasks","Factorial, traversal, reduce problem size by one","One call per level with O(1) work means n calls: O(n). Calling twice per level (like naive Fibonacci) makes 2ⁿ.","Fibonacci Number|509;Pow(x, n)|50;Reverse Linked List|206"],
+["Recursion with memoization","Exponential repeated states","O(states + transitions)","Same recursive state occurs repeatedly","Each distinct state is computed once and cached, so time is states × work per state, not the number of calls.","Climbing Stairs|70;Unique Paths|62;Fibonacci Number|509"],
+["Divide and conquer","Often O(n^2) in naive sorting/searching","O(n log n) for merge sort; average O(n log n) for quicksort","Split, solve, combine","T(n) = 2T(n/2) + O(n): log n levels, each doing n work in total, so n log n.","Sort an Array|912;Majority Element|169;Kth Largest Element in an Array|215"],
+["Subsequence recursion","O(2^n)","Depends on problem; DP may reduce it","Include/exclude each element","Two choices per element gives 2ⁿ leaves. DP helps only when states repeat (for example the same remaining sum).","Subsets|78;Partition Equal Subset Sum|416;Target Sum|494"],
+["Linked-list basic traversal","Repeated traversals can be O(n^2)","O(n), or O(1) for a known-node pointer update","Insert, delete, search, traverse","Walk once. If you already hold the node pointer, insert/delete is O(1) pointer rewiring.","Delete Node in a Linked List|237;Remove Nth Node From End of List|19;Remove Linked List Elements|203"],
+["Fast/slow pointers","O(n^2) comparisons in naive approaches","O(n)","Middle node, cycle detection","In a cycle the gap grows by 1 per step so they meet in O(n); for the middle, when fast reaches the end slow is halfway. No extra memory.","Linked List Cycle|141;Middle of the Linked List|876;Linked List Cycle II|142"],
+["Linked-list reversal","Repeatedly find previous nodes","O(n)","Reverse entire list, a section, or groups","Three pointers prev/curr/next flip each link once: O(n) time, O(1) space. Finding the previous node by walking from the head each time is n².","Reverse Linked List|206;Reverse Linked List II|92;Reverse Nodes in k-Group|25"],
+["Merge two sorted linked lists","Repeatedly search for the next smallest node","O(n+m)","Two sorted lists","Compare the two heads and attach the smaller; each node is attached once: O(n+m).","Merge Two Sorted Lists|21;Sort List|148"],
+["Merge k sorted lists","Repeated scanning can be O(Nk)","O(N log k) with a heap","Merge many sorted lists","A heap of the k current heads gives the next smallest in log k. N nodes × log k, instead of scanning k heads for each of N nodes.","Merge k Sorted Lists|23;Smallest Range Covering Elements from K Lists|632"],
+["Linked list + hashmap","Repeated search for a node","Expected O(1) lookup plus traversal","Random pointers, cache lookup","A map from old node to its copy gives O(1) pointer lookup, so random pointers are set in one pass instead of searching the list for each one (n²).","Copy List with Random Pointer|138"],
+["Doubly linked list + hashmap","Search-based cache operations","Expected O(1) per LRU cache operation","Insert/remove known nodes and find keys quickly","The map finds the node in O(1); a doubly linked list can unlink and move a known node in O(1). So get and put are both O(1).","LRU Cache|146;LFU Cache|460"]]},
+{t:"E. Binary Trees & BSTs",v:"n = number of nodes, h = height (O(log n) if balanced, O(n) if skewed).",
+N:["A BST is not automatically balanced. Its height can be O(n) in the worst case, so search and insertion can also become O(n)."],
+P:[
+["DFS traversals","Repeated traversal of subtrees","O(n)","Visit every node, calculate depth or subtree values","Each node is visited once: O(n) time, O(h) stack space.","Binary Tree Inorder Traversal|94;Binary Tree Preorder Traversal|144;Binary Tree Postorder Traversal|145;Maximum Depth of Binary Tree|104"],
+["BFS / level order","Repeatedly scan nodes for each level","O(n)","Level sums, zigzag, right-side view","A queue processes each node once; the queue size at the start of a round is the level width.","Binary Tree Level Order Traversal|102;Binary Tree Zigzag Level Order Traversal|103;Binary Tree Right Side View|199"],
+["Height / balance / diameter","Recalculate subtree heights repeatedly, potentially O(n^2)","O(n) with one postorder traversal","Height, balanced tree, diameter","Return the height upward and test/update the answer in the same call. Recomputing heights at every node costs n × O(n) = n² on a skewed tree.","Balanced Binary Tree|110;Diameter of Binary Tree|543"],
+["Path-sum problems","Enumerate paths repeatedly","Often O(n) or O(n^2), depending on whether paths start at every node","Root-to-leaf or any downward path","Root-to-leaf: carry the remaining sum down, O(n). Any start (LC 437): prefix sum + hashmap along the current root path gives O(n) instead of starting a walk from every node (n²).","Path Sum|112;Path Sum II|113;Path Sum III|437;Binary Tree Maximum Path Sum|124"],
+["Lowest common ancestor","Store/compare ancestor paths","O(n) for a general binary tree","Find the lowest common ancestor","Post-order: the first node whose left and right both report a find is the LCA. One pass: O(n). In a BST just go left or right by value: O(h).","Lowest Common Ancestor of a Binary Tree|236;Lowest Common Ancestor of a Binary Search Tree|235"],
+["Tree construction","Repeated linear searches in traversals","O(n) with value-to-index mapping when values are unique","Reconstruct from traversal orders","Preorder gives the root; a value→inorder-index map splits left and right in O(1). Without the map, a linear search per node costs n².","Construct Binary Tree from Preorder and Inorder Traversal|105;Construct Binary Tree from Inorder and Postorder Traversal|106"],
+["Serialize / deserialize","Repeated searching during reconstruction","O(n)","Convert a tree to a representation and back","Preorder with null markers: each node is written once and read once.","Serialize and Deserialize Binary Tree|297;Serialize and Deserialize BST|449"],
+["BST search","O(n)","O(h); O(log n) if balanced","Find a key in a BST","At each node discard one whole subtree, so you walk a single root-to-leaf path of at most h steps.","Search in a Binary Search Tree|700;Validate Binary Search Tree|98"],
+["BST insert / delete","O(n) worst case","O(h); O(log n) if balanced","Modify a BST","Walk one path (h steps) and relink in O(1). Delete may also find the successor, which is still within h.","Insert into a Binary Search Tree|701;Delete Node in a BST|450"],
+["Kth smallest in BST","Sort all values: O(n log n)","O(h+k) using inorder traversal with early stopping","BST ordering gives sorted inorder values","Inorder of a BST is sorted. Go down h levels, then visit k nodes and stop.","Kth Smallest Element in a BST|230"]]},
+{t:"F. Graphs",v:"V = vertices, E = edges. Inspect both, not just one.",
+N:["If V and E are both large, an O(V³) approach is usually unsuitable. Look at the number of vertices and the number of edges."],
+P:[
+["DFS connectivity","Repeatedly explore nodes from scratch","O(V+E)","Connected components, islands, reachability","Each vertex is marked visited once and each edge is examined once (twice if undirected): O(V+E).","Number of Islands|200;Number of Provinces|547;Flood Fill|733"],
+["BFS shortest path","Try many possible paths","O(V+E) for unweighted graphs","Minimum number of edges / moves","BFS reaches each vertex first by the fewest edges, and each vertex and edge is processed once.","Shortest Path in Binary Matrix|1091;Word Ladder|127;Open the Lock|752"],
+["Multi-source BFS","Run BFS separately from every source","O(V+E) when one multi-source traversal fits","Nearest source, spreading process","Put every source in the queue at distance 0 and run one BFS. Running a BFS from each source separately costs (number of sources) × (V+E).","Rotting Oranges|994;01 Matrix|542;Map of Highest Peak|1765"],
+["Topological sort","Try permutations of task order","O(V+E)","Dependencies, course prerequisites","Kahn's algorithm repeatedly removes indegree-0 vertices; each vertex and edge is handled once. Trying orderings is V!.","Course Schedule|207;Course Schedule II|210;Find Eventual Safe States|802"],
+["Union-Find","Repeatedly recompute connectivity","O((V+E)α(V)) near-linear with path compression and union by rank/size","Dynamic connectivity, redundant connections","find with path compression and union by size is amortized α(V), which is effectively constant. So E operations cost about E.","Redundant Connection|684;Accounts Merge|721;Number of Provinces|547"],
+["Minimum spanning tree","Enumerate possible spanning trees","O(E log E) for Kruskal; commonly O(E log V) for heap-based Prim","Minimum cost to connect all vertices","Kruskal: sort E edges (E log E), then take an edge if union-find says it joins two components. Prim: heap of frontier edges.","Min Cost to Connect All Points|1584;Find Critical and Pseudo-Critical Edges in MST|1489"],
+["Dijkstra","Explore paths without keeping best distances efficiently","O((V+E) log V) with adjacency list and binary heap","Shortest paths with nonnegative weights","Pop the nearest unsettled vertex from a heap; each edge relaxes at most once, and each heap operation costs log V. Needs non-negative weights.","Network Delay Time|743;Path With Minimum Effort|1631"],
+["Bellman–Ford","Enumerate paths","O(VE)","Negative edge weights; detect negative cycles","A shortest path has at most V−1 edges, so relax all E edges V−1 times: V·E. One extra pass detects a negative cycle.","Cheapest Flights Within K Stops|787;Network Delay Time|743"],
+["Floyd–Warshall","Run a separate shortest-path search for every source","O(V^3)","All-pairs shortest paths on a relatively small graph","Three nested loops over via-vertex k and pair (i, j): V³. Use only when V is a few hundred.","Find the City With the Smallest Number of Neighbors at a Threshold Distance|1334"]]},
+{t:"G. Heap / Priority Queue",v:"n = number of elements, k = elements to retain or return, N = total elements across inputs.",
+N:["For top-k the heap is most useful when k is much smaller than n. If you need all elements sorted, sorting may be simpler."],
+P:[
+["Heap implementation","Re-sort after each update","O(log n) insert/remove; O(1) peek","Priority queue operations","Insert and remove sift along the tree height, which is log n. Re-sorting after each update is n log n per update.","Kth Largest Element in a Stream|703;Last Stone Weight|1046"],
+["Top-k elements","Sort all elements: O(n log n)","O(n log k) using a size-k heap","Kth largest, top frequent elements","Keep a min-heap of size k: each of n items costs log k to push/pop. When k is small this is nearly linear.","Kth Largest Element in an Array|215;Top K Frequent Elements|347;K Closest Points to Origin|973"],
+["Merge k sorted lists (heap)","Repeatedly scan all k current heads: O(Nk)","O(N log k)","Merge sorted lists or arrays","The heap holds k heads and returns the smallest in log k. N pops × log k.","Merge k Sorted Lists|23;Smallest Range Covering Elements from K Lists|632"],
+["Kth largest using quickselect","Full sort: O(n log n)","Average O(n)","Need one order statistic, not full sorting","Partition like quicksort but recurse into one side only: n + n/2 + n/4 + … ≈ 2n on average (worst case n² without random pivots).","Kth Largest Element in an Array|215;K Closest Points to Origin|973"],
+["Running median","Sort all values after every insertion","O(log n) insertion, O(1) median lookup using two heaps","Median of a data stream","A max-heap holds the lower half and a min-heap the upper half, sizes kept within 1. The median is at the heap tops: O(1). Each insertion rebalances in log n.","Find Median from Data Stream|295"],
+["Huffman / repeated minimum merge","Repeatedly sort or scan for two minimums","O(n log n)","Combine the two smallest values repeatedly","Pop the two smallest, push their sum: n−1 merges × log n per heap operation.","Last Stone Weight|1046;Reorganize String|767"]]},
+{t:"H. Backtracking & Bitmasking",v:"n = number of choices, L = word length. Many of these remain exponential in the worst case.",
+N:["Backtracking optimization often reduces the search in practice without changing the worst-case complexity class. If the problem asks you to output all permutations, you cannot avoid the cost of producing them."],
+P:[
+["Subsets","O(2^n)","Still O(2^n) to output every subset","Generate all subsets","Include/exclude for each element gives 2ⁿ subsets. The output alone is that large, so no algorithm can beat it.","Subsets|78;Subsets II|90"],
+["Permutations","O(n!)","Usually factorial if every permutation must be generated","Generate arrangements","n choices for the first slot, n−1 for the next, …: n! leaves.","Permutations|46;Permutations II|47"],
+["Combination sum","Exponential search in general","Pruning reduces explored branches; worst case may remain exponential","Find combinations meeting a target","Sort first and stop a branch once the remaining target is smaller than the candidate. Fewer branches are explored, but the worst case is still exponential.","Combination Sum|39;Combination Sum II|40;Combination Sum III|216"],
+["Constraint-based backtracking","Enumerate all possibilities","Pruning; problem-dependent","N-Queens, graph coloring","Check the constraint before recursing (queen attacked, color used) so dead branches are cut at once.","N-Queens|51;Sudoku Solver|37;Palindrome Partitioning|131"],
+["Grid/path backtracking","Enumerate paths","Visited-state checks and pruning; often exponential in worst case","Word search, maze paths","Mark visited, recurse to up to 4 neighbours, unmark on return. Stop on the first mismatch to prune.","Word Search|79;Word Search II|212;Unique Paths III|980"],
+["Bitmask subset enumeration","O(2^n) subsets","O(2^n) enumeration; bitmasking makes each subset representation efficient","Small n, subset operations","Loop mask from 0 to 2ⁿ−1; bit i tells whether item i is included. Each subset is a single integer.","Subsets|78;Maximum Product of Word Lengths|318"],
+["Bitmask DP","Often O(n!) or O(n·2^n) brute force","Commonly O(n·2^n) or O(n^2·2^n), depending on transitions","Small-n optimization over subsets","State (mask, last) gives 2ⁿ·n states with up to n transitions each: n²·2ⁿ, instead of n! orderings.","Shortest Path Visiting All Nodes|847;Partition to K Equal Sum Subsets|698;Find the Shortest Superstring|943"]]},
+{t:"I. Greedy Algorithms",v:"Time is usually decided by sorting, scanning or maintaining a heap.",
+N:["Proof requirement: a locally optimal choice is not automatically globally optimal. You must establish why making that choice cannot eliminate a better solution."],
+P:[
+["Interval scheduling","Try combinations of intervals","O(n log n) with sorting, then O(n) scan","Maximum non-overlapping intervals","Sort by end time and take an interval if it starts after the last chosen end. Earliest finish leaves the most room (exchange argument). Sorting dominates.","Non-overlapping Intervals|435;Minimum Number of Arrows to Burst Balloons|452"],
+["Merge intervals","Compare intervals repeatedly","O(n log n)","Merge overlapping ranges","Sort by start; then each interval either extends the last merged one or begins a new one. One O(n) scan after the sort.","Merge Intervals|56;Insert Interval|57"],
+["Jump Game","Explore all possible jumps","O(n) for the standard reachability problem","Determine whether the last index is reachable","Track the furthest reachable index. If i passes it you are stuck; otherwise update it. One pass.","Jump Game|55"],
+["Jump Game II","BFS-style exploration of jumps","O(n) greedy scan","Minimum jumps to reach the end","It is an implicit BFS by levels: when you reach the end of the current reach, jump++ and extend to the furthest. One pass.","Jump Game II|45"],
+["Fractional knapsack","Try combinations","O(n log n) by sorting value-to-weight ratios","Fractions of items are allowed","Sort by value/weight descending, take whole items, then a fraction of the last. Sorting dominates. (Not a LeetCode problem; practise on GeeksforGeeks.)","Fractional Knapsack (GeeksforGeeks)|"],
+["Resource allocation","Try many assignments","Often O(n log n) with sorting or heaps","Schedule tasks or assign resources","Sort both sides (or use a heap) and match greedily, instead of trying every assignment.","Assign Cookies|455;Boats to Save People|881;Task Scheduler|621"],
+["Greedy + heap","Repeatedly search for the best candidate","Often O(n log n)","Repeatedly select the smallest/largest available choice","A heap returns the best available candidate in log n instead of an O(n) scan each time.","Meeting Rooms II (premium)|253;Reorganize String|767;IPO|502"]]},
+{t:"J. Dynamic Programming",v:"Time = number of states × work per state. W = numeric capacity or target.",
+N:["O(nW) is pseudo-polynomial: it depends on the numeric value W, not just the number of items. If W is enormous, that DP may be too slow."],
+P:[
+["1D / linear DP","Often exponential recursion","O(n) for simple one-dimensional state transitions","Climbing stairs, house robber","n states with an O(1) transition. The brute force repeats the same subproblems.","Climbing Stairs|70;House Robber|198;Min Cost Climbing Stairs|746;Decode Ways|91"],
+["Grid / 2D DP","Enumerate all paths","O(mn)","Grid paths, minimum path sum","m·n cells, each computed from up/left in O(1). The number of distinct paths is a huge binomial number.","Unique Paths|62;Minimum Path Sum|64;Maximal Square|221"],
+["DP on strings","Enumerate subsequences or edits","Often O(nm)","LCS, edit distance","State (i, j) means the answer for prefixes: n·m states with an O(1) transition.","Longest Common Subsequence|1143;Edit Distance|72;Longest Palindromic Substring|5"],
+["Interval DP","Enumerate all partitions or orders","Often O(n^3)","Burst balloons, matrix chain multiplication","State (i, j) is n² intervals; each tries n split points: n³.","Burst Balloons|312;Palindrome Partitioning II|132;Minimum Cost to Merge Stones|1000"],
+["Knapsack / subset sum","O(2^n) subset enumeration","Often O(nW) pseudo-polynomial DP","Choose items under a capacity/target","State (i, w) is n·W states with an O(1) transition, instead of 2ⁿ subsets.","Partition Equal Subset Sum|416;Coin Change|322;Target Sum|494"],
+["DP on stocks","Enumerate buy/sell decisions","Often O(nk) for at most k transactions","Maximum stock profit with transaction limits","State (day, transactions left, holding): about n·k·2 states, O(1) transition.","Best Time to Buy and Sell Stock|121;Best Time to Buy and Sell Stock III|123;Best Time to Buy and Sell Stock IV|188;Best Time to Buy and Sell Stock with Cooldown|309"],
+["Tree DP","Repeatedly enumerate node choices","Often O(n) for a fixed number of states per node","House Robber III","Each node computes a fixed number of states from its children in one post-order pass.","House Robber III|337;Binary Tree Cameras|968"],
+["DAG DP","Enumerate paths","Often O(V+E)","Longest path or number of ways in a DAG","Process vertices in topological order; each edge is used once to update a neighbour.","Longest Increasing Path in a Matrix|329;Number of Ways to Arrive at Destination|1976"],
+["Memoization","Recompute identical recursive states","O(S+T), where S is states and T transitions","Overlapping subproblems","Count distinct states. If that is far smaller than the number of calls, cache results. Time = states × work per state.","Word Break|139;Fibonacci Number|509;Climbing Stairs|70"]]},
+{t:"K. Trie & Bit Manipulation",v:"L = word length, B = number of bits. These are different parameters from the number of words or numbers.",
+N:["Trie complexities often depend on the word length L, and bitwise trie complexities depend on the number of bits B."],
+P:[
+["Trie insert/search","Scan all words for every query","O(L) per word operation","Prefix search, dictionary lookup","Walk one node per character, so cost depends on the word length, not on how many words are stored.","Implement Trie (Prefix Tree)|208;Design Add and Search Words Data Structure|211"],
+["Trie word suggestions","Scan every word per prefix","Depends on trie traversal and output size; often much faster for shared prefixes","Autocomplete","Walk the prefix in O(L), then collect words below that node. Shared prefixes are stored once.","Search Suggestions System|1268;Replace Words|648"],
+["Word break + DP","Try all word splits","Often O(n^2) DP, with lookup costs depending on the data structure","Segment a string into dictionary words","dp[i] is true if some j < i has dp[j] true and s[j:i] in the dictionary: about n² pairs, times the substring/lookup cost.","Word Break|139;Word Break II|140"],
+["Bitwise counting","Repeated division or string conversion","O(B) for a B-bit integer; often O(1) for fixed-width integers","Count set bits","n & (n−1) clears the lowest set bit, so the loop runs once per set bit (at most B).","Number of 1 Bits|191;Counting Bits|338"],
+["XOR unique element","Count all frequencies","O(n) time, O(1) extra space","All values occur twice except one","a^a = 0 and a^0 = a, so XOR-ing everything cancels pairs and leaves the unique value. No hash map needed.","Single Number|136;Single Number II|137;Missing Number|268"],
+["Bitwise Trie","Compare all pairs: O(n^2)","Often O(nB) for B-bit values","Maximum XOR pair/query","Insert each number's bits (B steps). To query, walk preferring the opposite bit at each level: B steps per number, so n·B instead of n².","Maximum XOR of Two Numbers in an Array|421;Maximum XOR With an Element From Array|1707"],
+["Range XOR","Recompute every range","O(n) preprocessing and O(1) per query with prefix XOR","Many range XOR queries","px[i] = px[i−1] ^ a[i], and xor(l..r) = px[r] ^ px[l−1], the same idea as prefix sums.","XOR Queries of a Subarray|1310;Count Triplets That Can Form Two Arrays of Equal XOR|1442"]]}
+];
+const SUP="⁰¹²³⁴⁵⁶⁷⁸⁹",sup=s=>s.replace(/\^(\d)/g,(m,d)=>SUP[d]).replace(/\^n/g,"ⁿ");
+const $=i=>document.getElementById(i),esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+let S={};try{S=JSON.parse(localStorage.getItem("ptl2")||"{}")}catch(e){}
+const sv=()=>{try{localStorage.setItem("ptl2",JSON.stringify(S))}catch(e){}};
+const F={fact:["O(n!)",n=>{if(n>170)return Infinity;let r=1;for(let i=2;i<=n;i++)r*=i;return r}],"2n":["O(2ⁿ)",n=>Math.pow(2,Math.min(n,1000))],n3:["O(n³)",n=>n**3],n2:["O(n²)",n=>n*n],nlogn:["O(n log n)",n=>n*Math.log2(n+1)],n:["O(n)",n=>n],logn:["O(log n)",n=>Math.log2(n+1)]};
+function cls(t){const i=t.indexOf("O(");if(i<0)return null;const s=t.slice(i+2,i+24).toLowerCase().replace(/\s/g,"");
+if(/!/.test(s))return"fact";if(/2\^n|n2\^n/.test(s))return"2n";if(/\^3/.test(s))return"n3";if(/\^2/.test(s))return"n2";
+if(/^(nm|nk|nq|nw|mn|ve|v\*e|n·k|n·m|m·n|n·w|n·q|n·2)/.test(s))return"n2";
+if(/^(log|\(log)/.test(s))return"logn";if(/log/.test(s))return"nlogn";return"n"}
+const ALL=[];PARTS.forEach((pt,i)=>pt.P.forEach((p,j)=>{const probs=p[5].split(";").map(x=>{const a=x.split("|");return{t:a[0],lc:a[1]}});ALL.push({i,j,id:"p"+i+"_"+j,name:p[0],bruteS:p[1],optS:p[2],clue:p[3],why:p[4],probs,bk:cls(p[1])||(/enumerate|exponential|try (combinations|permutations|many|all)|all possible/i.test(p[1])?"2n":"n2"),ok:cls(p[2])})}));
+const TOT=ALL.reduce((a,p)=>a+p.probs.length,0);
+function prog(){let d=0;ALL.forEach(p=>p.probs.forEach((_,k)=>{if(S[p.id+"_"+k])d++}));$("pb").style.width=d/TOT*100+"%";$("pt").textContent=`${d}/${TOT} problems done · ${ALL.filter(p=>p.probs.every((_,k)=>S[p.id+"_"+k])).length}/${ALL.length} patterns complete`}
+function match(){const n=Math.max(1,+$("n").value||1),lim=+$("lang").value,f=(k)=>F[k][1](n);
+$("mt").innerHTML="<table><tr><th>Complexity</th><th>Operations</th><th>Fits?</th></tr>"+["fact","2n","n3","n2","nlogn","n","logn"].map(k=>{const o=f(k);return `<tr><td class="tc">${F[k][0]}</td><td>${o>1e15?"huge":Math.round(o).toLocaleString()}</td><td class="${o<=lim?"y":"n"}">${o<=lim?"Yes":"Too slow"}</td></tr>`}).join("")+"</table>";
+const hit=ALL.filter(p=>p.bk&&p.ok&&f(p.bk)>lim&&f(p.ok)<=lim);
+$("mp").innerHTML=`<p style="margin:8px 0 4px"><b>Brute force is too slow here, but these patterns fit (${hit.length}):</b></p>`+(hit.length?hit.map(p=>`<button onclick="go('${p.id}')" style="margin:2px">${p.name}</button>`).join(""):'<span class="mu">Brute force already fits this n, or no listed pattern gets below the limit.</span>')}
+let part=-1,qs="";
+function go(id){part=-1;qs="";$("q").value="";render();const e=document.getElementById(id);if(e){e.open=true;e.scrollIntoView({behavior:"smooth"})}}
+function render(){const ch=$("ch");ch.innerHTML="";["All",...PARTS.map(p=>p.t.split(".")[0])].forEach((l,i)=>{const b=document.createElement("button");b.textContent=l=="All"?"All":l+" · "+PARTS[i-1].t.slice(3).split(" ")[0];if(i-1==part)b.className="on";b.onclick=()=>{part=i-1;render()};ch.appendChild(b)});
+const app=$("app");app.innerHTML="";const q=qs.toLowerCase();let h="";
+PARTS.forEach((pt,i)=>{if(part>=0&&part!=i)return;
+const items=ALL.filter(p=>p.i==i&&(!q||(p.name+p.clue+p.probs.map(x=>x.t+" "+(x.lc||"")).join(" ")).toLowerCase().includes(q)));if(!items.length)return;
+const tot=items.reduce((a,p)=>a+p.probs.length,0),dn=items.reduce((a,p)=>a+p.probs.filter((_,k)=>S[p.id+"_"+k]).length,0);
+h+=`<h2>${pt.t} <span class="tg">${dn}/${tot} done</span></h2><div class="mu" style="font-size:13px;margin-bottom:4px">${pt.v}</div>`;
+items.forEach(p=>{const L=LAD[p.name],d=p.probs.filter((_,k)=>S[p.id+"_"+k]).length;
+h+=`<details id="${p.id}"><summary>${p.name}<span class="tg">${d}/${p.probs.length}</span><span class="arrow"><span class="tc">${sup(p.bruteS)}</span> → <span class="tc">${sup(p.optS)}</span></span></summary><div class="b">
+<p><span class="k">Recognize it when:</span> ${p.clue}</p>
+<p><span class="k">Brute force:</span> <span class="tc">${sup(p.bruteS)}</span><br><span class="k">Optimized target:</span> <span class="tc">${sup(p.optS)}</span></p>
+<div class="why"><span class="k">Why the complexity drops:</span> ${sup(p.why)}</div></div>`;
+if(L){h+=`<div class="b"><span class="k">Step by step reduction</span></div>`+L[0].map((s,j)=>`<div class="st ${j==L[0].length-1?"l":""}"><span class="tc">${sup(s[0])}</span> ${j==0?"(brute force)":j==L[0].length-1?"(optimal)":"(better)"}<div class="mu">${sup(s[1])}</div></div>`).join("")+`<pre>${esc(L[1])}</pre>`}
+h+=`<div class="b"><span class="k">Practice problems</span></div>`+p.probs.map((x,k)=>{const key=p.id+"_"+k;return `<div class="pr ${S[key]?"d":""}"><input type="checkbox" data-k="${key}" ${S[key]?"checked":""}><span>${x.t}${x.lc?` · <a href="https://leetcode.com/problemset/?search=${x.lc}" target="_blank" rel="noopener">LC ${x.lc}</a>`:""}</span></div>`}).join("")+`<div style="height:6px"></div></details>`});
+if(!q&&pt.N.length)h+=pt.N.map(n=>`<div class="note">${sup(n)}</div>`).join("")});
+app.innerHTML=h||'<div class="card mu">No match. Try another word.</div>';
+app.querySelectorAll("input[data-k]").forEach(c=>c.onchange=()=>{S[c.dataset.k]=c.checked;sv();const o=[...app.querySelectorAll("details")].filter(x=>x.open).map(x=>x.id);render();o.forEach(id=>{const e=document.getElementById(id);if(e)e.open=true})});prog()}
+$("q").oninput=e=>{qs=e.target.value;render()};$("n").oninput=match;$("lang").onchange=match;
+$("rs").onclick=()=>{if(confirm("Clear all progress?")){S={};sv();render()}};
 $("th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme=="dark"||(!r.dataset.theme&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=d?"light":"dark"};
 render();match();
 </script></body></html>
